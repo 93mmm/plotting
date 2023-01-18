@@ -42,13 +42,14 @@ namespace Parser
     };
     
     template <typename T>
-    void getPoints(pointsConfig CFG)
+    void getPoints(pointsConfig &CFG)
     {
         typedef exprtk::symbol_table<T> symbol_table_t;
         typedef exprtk::expression<T>   expression_t;
         typedef exprtk::parser<T>       parser_t;
 
-        const std::string expression_string = Parsing.expression;
+        const std::string expression_string = CFG.expression;
+        std::cout << expression_string << 9498;
 
         T x;
 
@@ -62,14 +63,12 @@ namespace Parser
         parser_t parser;
         parser.compile(expression_string, expression);
 
-        T y = expression.value();
-        range = CFG.range;
         {
             int i = 0;
-            int x = T(-range);
-            for (; x <= T(+range); i++, x += T(0.01))
+            for (x = T(+4); x <= T(+5); i++, x += T(0.01))
             {
-                y = expression.value();
+                const T y = expression.value();
+                CFG.array_x[i] = x;
                 CFG.array_y[i] = y;
             }
         }

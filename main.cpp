@@ -20,24 +20,12 @@ int main()
     std::cout << expression << "\n";
 
     Parser::pointsConfig cfg;
-
-    double array_y[2000];
-    {
-        int i = 0;
-        double x = -5;
-        for (; x <= 5; x += 0.01, i++)
-        {
-            cfg.array_x[i] = x;
-        }
-    }
-
+    cfg.expression = expression;
 
     Parser::getPoints<double>(cfg);
 
-    // array_y = cfg.array_y
+    for (int i = 0; i < 1000; i++)
+    {
+        std::cout << cfg.array_x[i] << "\t" << cfg.array_y[i] << "\n";
+    }
 }
-/*
-configuring arrays with relevant x and y points
-
-
-*/

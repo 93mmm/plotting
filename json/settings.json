@@ -4,6 +4,6 @@
     "function_graph_color": "#00ff00",
     "width": 500,
     "height": 500,
-    "expression": "x ^ 3",
+    "expression": "x ^ 2",
     "plotting_range": 5
 }
