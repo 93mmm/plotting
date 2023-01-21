@@ -1,0 +1,1 @@
+/usr/bin/clang++  -ljsoncpp -g CMakeFiles/main.dir/src/main.cpp.o -o main 
