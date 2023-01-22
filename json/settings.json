@@ -1,0 +1,9 @@
+{
+    "colorAxes": "#000000",
+    "colorBackground": "#ffffff",
+    "colorFunctionGraph": "#00ff00",
+    "width": 500,
+    "height": 500,
+    "expression": "x * 2",
+    "range": 5
+}
