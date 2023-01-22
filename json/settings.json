@@ -1,9 +1,9 @@
 {
-    "color_axes": "#000000",
-    "color_background": "#ffffff",
-    "color_function_graph": "#00ff00",
+    "colorAxes": "#000000",
+    "colorBackground": "#ffffff",
+    "colorFunctionGraph": "#00ff00",
     "width": 500,
     "height": 500,
-    "expression": "x ^ 2",
+    "expression": "x * 2",
     "range": 5
 }

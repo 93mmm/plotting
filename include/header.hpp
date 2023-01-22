@@ -1,17 +1,14 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 #include <string>
-#include <cstdio>
-#include <json/value.h>
-#include <json/json.h>
-
+#include <nlohmann/json.hpp>
 #include "exprtk.hpp"
 #include <chrono>
 
 using std::string;
 using std::cout;
+using json = nlohmann::json;
 using namespace std::chrono;
 
 namespace Parser
@@ -19,31 +16,19 @@ namespace Parser
     struct pointsConfig
     {
         int range = 0;
-        int size = 0;
-        double array_x[2000];
-        double array_y[2000];
         string expression = "";
+        double array_x[5000];
+        double array_y[5000];
     };
-    
-    struct windowConfig
-    {
-        string colorAxes = "#000000";
-        string colorBackground = "#ffffff";
-        string colorFunctionGraph = "#00ff00";
-        int width = 500;
-        int height = 500;
-    };
-    
+
     template <typename T>
     void getPoints(pointsConfig &CFG)
     {
-        
         typedef exprtk::symbol_table<T> symbol_table_t;
         typedef exprtk::expression<T>   expression_t;
         typedef exprtk::parser<T>       parser_t;
 
-        const string expression_string = CFG.expression;
-        cout << expression_string << 9498;
+        const string expression_string = CFG.expression.substr(1, CFG.expression.length() - 2);
 
         T x;
 
@@ -75,34 +60,51 @@ namespace Parser
         // member function on the duration object
         cout << "\n" << "duration: " << duration.count() << "\n";
     }
-
 }
 
 namespace Window
 {
-
+    struct windowConfig
+    {
+        string colorAxes = "#000000";
+        string colorBackground = "#ffffff";
+        string colorFunctionGraph = "#00ff00";
+        int width = 500;
+        int height = 500;
+    };
 }
 
 namespace JSON 
 {
-    void getData(Parser::pointsConfig &points, Parser::windowConfig &window)
+    void getData(Parser::pointsConfig &points, Window::windowConfig &window)
     {
-        Json::Value jsonFile;
-        Json::Reader reader;
-        std::ifstream file("json/settings.json");
-        reader.parse(file, jsonFile);
-        // points
-        points.range = jsonFile["range"].asInt();
-        points.expression = jsonFile["expression"].asString();
+        std::ifstream jsonFile("json/settings.json");
+        json j = json::parse(jsonFile);
 
-        // colors
-        window.colorAxes = jsonFile["color_axes"].asString();
-        window.colorBackground = jsonFile["color_background"].asString();
-        window.colorFunctionGraph = jsonFile["color_function_graph"].asString();
 
-        // window properties
-        window.height = jsonFile["height"].asInt();
-        window.width = jsonFile["width"].asInt();
+        points.range = stoi(j["range"].dump());
+        points.expression = j["expression"].dump();
+
+        window.width = stoi(j["width"].dump());
+        window.height = stoi(j["height"].dump());
+        window.colorAxes = j["colorAxes"].dump();
+        window.colorBackground = j["colorBackground"].dump();
+        window.colorFunctionGraph = j["colorFunctionGraph"].dump();
+
     }
-
+    void setData(Parser::pointsConfig points, Window::windowConfig window)
+    {
+        json j =
+        {
+            { "colorAxes", window.colorAxes },
+            { "colorBackground", window.colorBackground },
+            { "colorFunctionGraph", window.colorFunctionGraph },
+            { "width", window.width },
+            { "height", window.height },
+            { "expression", points.expression },
+            { "range", points.range }
+        };
+        std::ofstream o("json/settings.json");
+        o << std::setw(4) << j << std::endl;
+    }
 }
