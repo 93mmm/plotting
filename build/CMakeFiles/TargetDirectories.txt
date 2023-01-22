@@ -1,3 +1,0 @@
-/home/m/Documents/plotting/build/CMakeFiles/main.dir
-/home/m/Documents/plotting/build/CMakeFiles/edit_cache.dir
-/home/m/Documents/plotting/build/CMakeFiles/rebuild_cache.dir
