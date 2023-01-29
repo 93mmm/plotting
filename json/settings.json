@@ -1,10 +1,27 @@
 {
-    "width": 701,
-    "height": 401,
-    "colorAxes": "#000000",
-    "colorBackground": "#ffffff",
-    "colorFunctionGraph": "#00ff00",
-    "expression": "x * 2",
-    "range": 5,
-    "step": 0.01
+    "window": {
+        "width": 1401,
+        "height": 801,
+        "colorAxes": [
+            0,
+            0,
+            0
+        ],
+        "colorBackground": [
+            255,
+            255,
+            255
+        ],
+        "colorFunctionGraph": [
+            0,
+            255,
+            0
+        ]
+    },
+    "points": {
+        "range": 5
+    },
+    "files": [
+        ""
+    ]
 }
