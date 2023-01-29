@@ -17,11 +17,11 @@ find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
 set(PROJECT_SOURCES
         src/main.cpp
-        include/mainwindow.cpp
-        include/mainwindow.h
-        include/mainwindow.ui
+        include/gui_window.h
+        include/application.h
+        include/assign.cpp
         include/exprtk.hpp
-        include/header.hpp
+        include/mainwindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
