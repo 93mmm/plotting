@@ -131,9 +131,6 @@ void Window::CreateWindow()
             if (event.type == sf::Event::MouseWheelMoved)
             {
                 scaleCoef += event.mouseWheel.delta;
-                std::cout << "wheel movement: " << event.mouseWheel.delta << std::endl;
-                std::cout << "mouse x: " << event.mouseWheel.x << std::endl;
-                std::cout << "mouse y: " << event.mouseWheel.y << std::endl;
             }
         }
         window.clear();
@@ -143,7 +140,7 @@ void Window::CreateWindow()
             int range = pointsCFG.range * (1 / pointsCFG.step) * 2;
             for (int i = 0; i < range; i++)
             {
-                sf::Color color = sf::Color::Red;
+                sf::Color color = sf::Color::White;
                 double x = -pointsCFG.arrayX[i] * scaleCoef + windowCFG.side / 2;
                 double y = -pointsCFG.arrayY[i] * scaleCoef + windowCFG.side / 2;
                 sf::Vertex point(sf::Vector2f(x, y), color);
