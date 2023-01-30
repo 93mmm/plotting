@@ -1,6 +1,7 @@
 #include "application.h"
 #include "gui_window.h"
 #include "./ui_mainwindow.h"
+#include <math.h>
 
 using std::string;
 using std::cout;;
@@ -34,13 +35,11 @@ void MainWindow::on_actionSave_triggered()
 
 }
 
-
 void MainWindow::on_actionPlot_Graph_triggered()
 {
     Window::pointsCFG.expression = ui->plainTextEdit->textCursor().selectedText().toStdString();
     Window::SetPointsConfig<double>();
     Window::SetWindowConfig();
-    Window::MovePoints(Window::windowCFG.width / 2, Window::windowCFG.height / 2);
     Window::CreateWindow();
 }
 
@@ -50,7 +49,7 @@ void Window::SetPointsConfig()
     std::ifstream jsonFile("json/settings.json");
     json parsedFile = json::parse(jsonFile);
     pointsCFG.range = stoi(parsedFile["points"]["range"].dump());
-    pointsCFG.step = 0.01;
+    pointsCFG.step = 0.001;
     jsonFile.close();
 
     typedef exprtk::symbol_table<T> symbol_table_t;
@@ -68,7 +67,7 @@ void Window::SetPointsConfig()
     {
         int i = 0;
         int range = pointsCFG.range;
-        double step = 0.01;
+        double step = pointsCFG.step;
         for (x = T(-range); x <= T(+range); i++, x += T(step))
         {
             const T y = expression.value();
@@ -78,24 +77,12 @@ void Window::SetPointsConfig()
     }
 }
 
-void Window::MovePoints(double moveX, double moveY)
-{
-    int range = pointsCFG.range * (1 / pointsCFG.step) * 2;
-    for (int i = 0; i < range; i++)
-    {
-        pointsCFG.arrayX[i] += moveX;
-        pointsCFG.arrayY[i] += moveY;
-        cout << pointsCFG.arrayX[i] << "\t" << pointsCFG.arrayY[i] << "\n";
-    }
-}
-
 void Window::SetWindowConfig()
 {
     std::ifstream jsonFile("json/settings.json");
     json parsedFile = json::parse(jsonFile);
 
-    windowCFG.width = stoi(parsedFile["window"]["width"].dump());
-    windowCFG.height = stoi(parsedFile["window"]["height"].dump());
+    windowCFG.side = stoi(parsedFile["window"]["side"].dump());
 
     windowCFG.colorAxes[0] = stoi(parsedFile["window"]["colorAxes"][0].dump());
     windowCFG.colorAxes[1] = stoi(parsedFile["window"]["colorAxes"][1].dump());
@@ -118,22 +105,22 @@ void Window::RenderWindow()
 
 void Window::CreateWindow()
 {
-    sf::RenderWindow window(sf::VideoMode(windowCFG.width, windowCFG.height), "");
+    int side = windowCFG.side;
+    int scaleCoef = windowCFG.side / 20;
+    sf::RenderWindow window(sf::VideoMode(side, side), "");
     
     sf::Vertex x_axis[] =
     {
-        sf::Vertex(sf::Vector2f(windowCFG.width / 2, 0)),
-        sf::Vertex(sf::Vector2f(windowCFG.width / 2, windowCFG.height))
+        sf::Vertex(sf::Vector2f(side / 2, 0)),
+        sf::Vertex(sf::Vector2f(side / 2, side))
     };
 
     sf::Vertex y_axis[] =
     {
-        sf::Vertex(sf::Vector2f(0, windowCFG.height / 2)),
-        sf::Vertex(sf::Vector2f(windowCFG.width, windowCFG.height / 2))
+        sf::Vertex(sf::Vector2f(0, side / 2)),
+        sf::Vertex(sf::Vector2f(side, side / 2))
     };
 
-    Window::MovePoints(windowCFG.height / 2, windowCFG.width / 2);
-    
     while (window.isOpen())
     {
         sf::Event event;
@@ -141,11 +128,30 @@ void Window::CreateWindow()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if (event.type == sf::Event::MouseWheelMoved)
+            {
+                scaleCoef += event.mouseWheel.delta;
+                std::cout << "wheel movement: " << event.mouseWheel.delta << std::endl;
+                std::cout << "mouse x: " << event.mouseWheel.x << std::endl;
+                std::cout << "mouse y: " << event.mouseWheel.y << std::endl;
+            }
         }
         window.clear();
         window.draw(x_axis, 2, sf::Lines);
         window.draw(y_axis, 2, sf::Lines);
+        {
+            int range = pointsCFG.range * (1 / pointsCFG.step) * 2;
+            for (int i = 0; i < range; i++)
+            {
+                sf::Color color = sf::Color::Red;
+                double x = -pointsCFG.arrayX[i] * scaleCoef + windowCFG.side / 2;
+                double y = -pointsCFG.arrayY[i] * scaleCoef + windowCFG.side / 2;
+                sf::Vertex point(sf::Vector2f(x, y), color);
+                window.draw(&point, 1, sf::Points);
+            }
+        }
         window.display();
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
+    cout << pointsCFG.range * (1 / pointsCFG.step) * 2 << std::endl;
 }

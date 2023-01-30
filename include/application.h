@@ -18,9 +18,9 @@ namespace Window
     {
         string expression = "";
         int range = 5;
-        double step = 0.01;
-        double arrayX[5000];
-        double arrayY[5000];
+        double step = 0.001;
+        double arrayX[50000];
+        double arrayY[50000];
     } pointsCFG;
 
     struct WindowConfig
@@ -28,8 +28,7 @@ namespace Window
         int colorAxes[3] {0, 0, 0};
         int colorBackground[3] {255, 255, 255};
         int colorFunctionGraph[3] {0, 255, 0};
-        int width = 0;
-        int height = 0;
+        int side = 0;
     } windowCFG;
 
 
@@ -37,7 +36,6 @@ namespace Window
     template <typename T>
     void SetPointsConfig();
 
-    void MovePoints(double moveX, double moveY);
     void SetWindowConfig();
 
     void CreateWindow();

@@ -1,7 +1,6 @@
 {
     "window": {
-        "width": 1401,
-        "height": 801,
+        "side": 600,
         "colorAxes": [
             0,
             0,
@@ -19,7 +18,7 @@
         ]
     },
     "points": {
-        "range": 5
+        "range": 25
     },
     "files": [
         ""
