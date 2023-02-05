@@ -2,6 +2,7 @@
 #include "qt_window.h"
 #include "./ui_mainwindow.h"
 #include <math.h>
+#include <thread>
 
 using std::string;
 using std::cout;;
@@ -42,13 +43,59 @@ void MainWindow::on_actionPlot_Graph_triggered()
     sfml_win.RunWindow();
 }
 
-void Win::InitVertexArrays()
+double Win::GetVisualCoordinate(double coordinate)
+{
+    return coordinate * windowCFG.scaleCoef + windowCFG.side / 2;
+}
+
+double Win::GetPlaneCoordinate(double coordinate)
+{
+    return (coordinate - windowCFG.side / 2) / windowCFG.scaleCoef;
+}
+
+void Win::InitSfFields()
 {
     int side = windowCFG.side;
     axes[0].position = sf::Vector2f(side / 2, 0);
     axes[1].position = sf::Vector2f(side / 2, side);
     axes[2].position = sf::Vector2f(0, side / 2);
     axes[3].position = sf::Vector2f(side, side / 2);
+    
+    for (int i = -50; i < 50; i += 2)
+    {
+        gridX[i + 50].color = sf::Color(100, 100, 100);
+        gridY[i + 50].color = sf::Color(100, 100, 100);
+
+        gridX[i + 51].color = sf::Color(100, 100, 100);
+        gridY[i + 51].color = sf::Color(100, 100, 100);
+    }
+
+    font.loadFromFile("reg_consolas.ttf");
+    positionOfCursor.setFont(font);
+    positionOfCursor.setCharacterSize(10);
+    positionOfCursor.setFillColor(sf::Color::White);
+    positionOfCursor.setPosition(sf::Vector2f(windowCFG.side - 200, 1));
+}
+
+void Win::ResizeGrid()
+{
+    {
+        int i = -50;
+        int increment = -25;
+        for (; i < 50; i += 2)
+        {
+            double pos = GetVisualCoordinate(increment);
+
+            gridX[i + 50].position = sf::Vector2f(pos, 0);
+
+            gridY[i + 50].position = sf::Vector2f(0, pos);
+
+            gridX[i + 51].position = sf::Vector2f(pos, windowCFG.side);
+
+            gridY[i + 51].position = sf::Vector2f(windowCFG.side, pos);
+            increment++;
+        }
+    }
 }
 
 void Win::CheckEvent()
@@ -62,29 +109,33 @@ void Win::CheckEvent()
         }
         if (event.type == sf::Event::MouseWheelMoved)
         {
-            cout << windowCFG.scaleCoef
-                 << "\n"
-                 << event.mouseWheel.delta
-                 << "\n";
-            /*
-            if (windowCFG.scaleCoef <= 1 and event.mouseWheel.delta == 1)
-            {
+            double *scaleCoef = &windowCFG.scaleCoef;
+            bool flag = false;
 
-            } else if (windowCFG.scaleCoef <= 1 and event.mouseWheel.delta == 1)
-            {
-                
-            }
-            */
-            if (windowCFG.scaleCoef > 1 and windowCFG.scaleCoef < 2000)
-            {
-                windowCFG.scaleCoef = windowCFG.scaleCoef * (1 + 0.01 * event.mouseWheel.delta);
-            }
+            if (*scaleCoef < 1000 and *scaleCoef > 5.5)
+                flag = true;
+            else if (*scaleCoef <= 5.5 and event.mouseWheel.delta == 1)
+                flag = true;
+            else if (*scaleCoef >= 1000 and event.mouseWheel.delta == -1)
+                flag = true;
+            if (flag)
+                *scaleCoef *= 1 + 0.05 * event.mouseWheel.delta;
         }
     }
+    currentX = sf::Mouse::getPosition(window).x;
+    currentY = sf::Mouse::getPosition(window).y;
 }
 void Win::DrawGrid()
 {
+    ResizeGrid();
+    if (windowCFG.scaleCoef < 10)
+    {
+        //window.draw(gridX); 
+    }
+    window.draw(gridX);
+    window.draw(gridY);
     window.draw(axes);
+    window.draw(positionOfCursor);
 }
 
 void Win::DrawPoints()
@@ -93,11 +144,23 @@ void Win::DrawPoints()
         int range = pointsCFG.range * (1 / pointsCFG.step) * 2;
         for (int i = 0; i < range; i++)
         {
-            sf::Color color = sf::Color::White;
-            double x = -pointsCFG.arrayX[i] * windowCFG.scaleCoef + windowCFG.side / 2;
-            double y = -pointsCFG.arrayY[i] * windowCFG.scaleCoef + windowCFG.side / 2;
+            double x = GetVisualCoordinate(pointsCFG.arrayX[i]);
+            double y = GetVisualCoordinate(-pointsCFG.arrayY[i]);
 
-            sf::Vertex point(sf::Vector2f(x, y), color);
+            /*if (i == 24000 or i == 25000 or i == 26000)
+            {
+                cout << pointsCFG.arrayX[i]
+                     << "\n"
+                     << pointsCFG.arrayY[i]
+                     << "\n"
+                     << x
+                     << "\n"
+                     << y
+                     << "\n";
+            }*/
+
+            sf::Vertex point(sf::Vector2f(x, y));
+            point.color = sf::Color(windowCFG.colorFunctionGraph[0], windowCFG.colorFunctionGraph[1], windowCFG.colorFunctionGraph[2]);
             window.draw(&point, 1, sf::Points);
         }
     }
@@ -157,14 +220,19 @@ void Win::SetPointsConfig(string exp)
             pointsCFG.arrayY[i] = y;
         }
     }
-    cout << pointsCFG.arrayX[0] << " "
-         << pointsCFG.arrayY[0];
+}
+
+void Win::DrawText()
+{
+    string pos = "x: " + std::to_string(GetPlaneCoordinate(currentX)) + " y: " + std::to_string(GetPlaneCoordinate(currentY));
+    positionOfCursor.setString(pos);
+    window.draw(positionOfCursor);
 }
 
 void Win::RunWindow()
 {
     GetDataFromJSON();
-    InitVertexArrays();
+    InitSfFields();
     window.create(sf::VideoMode(windowCFG.side, windowCFG.side), "");
     while (window.isOpen())
     {
@@ -173,6 +241,7 @@ void Win::RunWindow()
         window.clear();
         DrawGrid();
         DrawPoints();
+        DrawText();
         window.display();
     }
 }
