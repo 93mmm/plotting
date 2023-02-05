@@ -17,9 +17,9 @@ find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
 set(PROJECT_SOURCES
         src/main.cpp
-        include/gui_window.h
-        include/application.h
-        include/assign.cpp
+        include/qt_window.h
+        include/sfml_window.h
+        include/qt_sfml_window.cpp
         include/exprtk.hpp
         include/mainwindow.ui
 )
