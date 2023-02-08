@@ -1,8 +1,46 @@
-<h1> Drawing a graph, C++ </h1>
-<h2> How to compile: </h2>
-<h3> 1. Install nlohmann-json-dev into PATH </h3>
-<h3> 2. Install SFML into PATH </h3>
-<h3> 3. Run CMake </h3>
-<h3> 4. Place json/settings.json into build directory </h3>
-<h2> Run: </h2>
-<h3> type in console "./build/Plotting" </h3>
+# Drawing a graph, C++
+
+My first gui C++ app
+
+## Requirements
+
+1. Installed [SFML](https://github.com/SFML/SFML):
+```bash
+sudo apt-get install libsfml-dev
+```
+2. Installed Git:
+```bash
+sudo apt-get install git
+```
+3. Installed CMake:
+```bash
+sudo apt install cmake
+```
+4. Installed Clang:
+```bash
+sudo apt install clang
+```
+4. Installed [nlohmann-json](https://github.com/nlohmann/json):
+```bash
+sudo apt install nlohmann-json-dev
+```
+
+## Building and running
+
+```bash
+git clone https://github.com/93mmm/plotting
+cd plotting
+mkdir build
+cd build
+cmake ..
+make
+```
+Wait until project end compiling
+```bash
+mv notepad ../exec
+```
+
+To run application:
+```bash
+./notepad
+```
