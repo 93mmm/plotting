@@ -42,5 +42,7 @@ mv notepad ../exec
 
 To run application:
 ```bash
+cd ..
+cd exec
 ./notepad
 ```
