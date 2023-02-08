@@ -5,6 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <SFML/Graphics.hpp>
 #include <thread>
+#include "qt_window.h"
 
 #include "exprtk.hpp"
 
@@ -33,8 +34,8 @@ class Win
             double scaleCoef = 1;
         };
 
-        int currentX, currentY;
-        int movedX, movedY;
+        int movedX = 0, movedY = 0;
+        bool tap = false;
 
         PointsConfig pointsCFG;
         WindowConfig windowCFG;
@@ -46,6 +47,8 @@ class Win
         sf::VertexArray miniGridY{sf::Lines, 100};
         sf::Font font;
         sf::Text positionOfCursor;
+        
+        int prevPosX, prevPosY, currentX, currentY;
 
         double GetVisualCoordinate(double coordinate);
         double GetPlaneCoordinate(double coordinate);

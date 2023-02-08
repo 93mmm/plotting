@@ -75,26 +75,28 @@ void Win::InitSfFields()
     positionOfCursor.setCharacterSize(10);
     positionOfCursor.setFillColor(sf::Color::White);
     positionOfCursor.setPosition(sf::Vector2f(windowCFG.side - 200, 1));
+
+    prevPosX = sf::Mouse::getPosition(window).x;
+    prevPosY = sf::Mouse::getPosition(window).y;
 }
 
 void Win::ResizeGrid()
 {
+    int side = windowCFG.side;
+    axes[0].position = sf::Vector2f(side / 2 + movedX, 0);
+    axes[1].position = sf::Vector2f(side / 2 + movedX, side);
+    axes[2].position = sf::Vector2f(0, side / 2 + movedY);
+    axes[3].position = sf::Vector2f(side, side / 2 + movedY);
+    int i = -50;
+    int increment = -25;
+    for (; i < 50; i += 2)
     {
-        int i = -50;
-        int increment = -25;
-        for (; i < 50; i += 2)
-        {
-            double pos = GetVisualCoordinate(increment);
-
-            gridX[i + 50].position = sf::Vector2f(pos, 0);
-
-            gridY[i + 50].position = sf::Vector2f(0, pos);
-
-            gridX[i + 51].position = sf::Vector2f(pos, windowCFG.side);
-
-            gridY[i + 51].position = sf::Vector2f(windowCFG.side, pos);
-            increment++;
-        }
+        double pos = GetVisualCoordinate(increment);
+        gridX[i + 50].position = sf::Vector2f(pos + movedX, 0);
+        gridY[i + 50].position = sf::Vector2f(0, pos + movedY);
+        gridX[i + 51].position = sf::Vector2f(pos + movedX, windowCFG.side);
+        gridY[i + 51].position = sf::Vector2f(windowCFG.side, pos + movedY);
+        increment++;
     }
 }
 
@@ -124,7 +126,17 @@ void Win::CheckEvent()
     }
     currentX = sf::Mouse::getPosition(window).x;
     currentY = sf::Mouse::getPosition(window).y;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        movedX += currentX - prevPosX;
+        movedY += currentY - prevPosY;
+        prevPosX = currentX;
+        prevPosY = currentY;
+    }
+    prevPosX = currentX;
+    prevPosY = currentY;
 }
+
 void Win::DrawGrid()
 {
     ResizeGrid();
@@ -140,29 +152,15 @@ void Win::DrawGrid()
 
 void Win::DrawPoints()
 {
+    int range = pointsCFG.range * (1 / pointsCFG.step) * 2;
+    for (int i = 0; i < range; i++)
     {
-        int range = pointsCFG.range * (1 / pointsCFG.step) * 2;
-        for (int i = 0; i < range; i++)
-        {
-            double x = GetVisualCoordinate(pointsCFG.arrayX[i]);
-            double y = GetVisualCoordinate(-pointsCFG.arrayY[i]);
+        double x = GetVisualCoordinate(pointsCFG.arrayX[i]) + movedX;
+        double y = GetVisualCoordinate(-pointsCFG.arrayY[i]) + movedY;
 
-            /*if (i == 24000 or i == 25000 or i == 26000)
-            {
-                cout << pointsCFG.arrayX[i]
-                     << "\n"
-                     << pointsCFG.arrayY[i]
-                     << "\n"
-                     << x
-                     << "\n"
-                     << y
-                     << "\n";
-            }*/
-
-            sf::Vertex point(sf::Vector2f(x, y));
-            point.color = sf::Color(windowCFG.colorFunctionGraph[0], windowCFG.colorFunctionGraph[1], windowCFG.colorFunctionGraph[2]);
-            window.draw(&point, 1, sf::Points);
-        }
+        sf::Vertex point(sf::Vector2f(x, y));
+        point.color = sf::Color(windowCFG.colorFunctionGraph[0], windowCFG.colorFunctionGraph[1], windowCFG.colorFunctionGraph[2]);
+        window.draw(&point, 1, sf::Points);
     }
 }
 
@@ -224,7 +222,7 @@ void Win::SetPointsConfig(string exp)
 
 void Win::DrawText()
 {
-    string pos = "x: " + std::to_string(GetPlaneCoordinate(currentX)) + " y: " + std::to_string(GetPlaneCoordinate(currentY));
+    string pos = "x: " + std::to_string(GetPlaneCoordinate(currentX - movedX)) + " y: " + std::to_string(-GetPlaneCoordinate(currentY - movedY));
     positionOfCursor.setString(pos);
     window.draw(positionOfCursor);
 }
@@ -243,5 +241,6 @@ void Win::RunWindow()
         DrawPoints();
         DrawText();
         window.display();
+        QCoreApplication::processEvents();
     }
 }
