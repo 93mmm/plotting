@@ -25,6 +25,8 @@ private slots:
 
     void on_actionPlot_Graph_triggered();
 
+    void setText(std::string filename);
+
 private:
     Ui::MainWindow *ui;
 };

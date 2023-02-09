@@ -1,0 +1,31 @@
+Select finction like |y = x ^ 2| then press ctrl+b to plot graph! 
+
+You can also use these operations:
+
+x + n       ---> adding n to x
+x - n       ---> substraction n from x
+x / n       ---> division x by n
+x * n       ---> multiplication 
+x ^ n       ---> x in power of n
+abs(x)      ---> absolute value of x
+
+log(x)      ---> ln of x
+log10(x)    ---> lg of x
+logn(x, n)  ---> logarithm of a x to base n
+
+sqrt(x)     ---> square root of x
+root(x, n)  ---> nth-root of x
+
+asin(x)     ---> arc sine of x
+sin(x)      ---> sine of x
+sinh(x)     ---> hyperbolic sine of x
+
+acos(x)     ---> arc cos of x
+cos(x)      ---> cosine of x
+cosh(x)     ---> hyperbolic cosine of x
+
+atan(x)     ---> arc tangent of x
+tan(x)      ---> tangent of x
+tanh(x)     ---> hyperbolic tangent of x
+
+cot(x)      ---> cotangent of x

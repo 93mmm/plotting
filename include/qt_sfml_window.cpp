@@ -3,6 +3,7 @@
 #include "./ui_mainwindow.h"
 #include <math.h>
 #include <thread>
+#include <fstream>
 
 using std::string;
 using std::cout;;
@@ -12,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setText("how_to_use_notepad.txt");
 }
 
 MainWindow::~MainWindow()
@@ -42,6 +44,28 @@ void MainWindow::on_actionPlot_Graph_triggered()
     sfml_win.SetPointsConfig(ui->plainTextEdit->textCursor().selectedText().toStdString());
     sfml_win.RunWindow();
 }
+
+void MainWindow::setText(std::string filename)
+{
+    std::ifstream ifs;
+    ifs.open(filename);
+    if (!ifs.is_open())
+        cout << "file \"how_to_use_notepad.txt\" deleted\n";
+    else
+    {
+        string fileString;
+        QString line;
+        QStringList text;
+        while (getline(ifs, fileString))
+        {
+            line = QString::fromStdString(fileString);
+            text.append(line);
+        }
+        ui->plainTextEdit->setPlainText(text.join("\n"));
+        ifs.close();
+    }
+}
+
 
 double Win::GetVisualCoordinate(double coordinate)
 {
