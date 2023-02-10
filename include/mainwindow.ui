@@ -98,6 +98,7 @@
     <string>Ctrl+N</string>
    </property>
   </action>
+  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

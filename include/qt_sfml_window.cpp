@@ -2,13 +2,10 @@
 #include "qt_window.h"
 #include "./ui_mainwindow.h"
 
-
-using std::string;
 using std::cout;;
+using std::string;
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     currentPath = QString::fromStdString("how_to_use_notepad.txt");
@@ -22,42 +19,51 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    cout << currentPath.toStdString() << "\n";
-    currentPath = QFileDialog::getOpenFileName(this,
-        tr("Open file"));
+    currentPath = QFileDialog::getOpenFileName(this, tr("Open file"));
     setText();
-    cout << currentPath.toStdString() << "\n";
 }
 
+void ReplaceSpaces(string &str, string toRemove)
+{
+    while (str.find(toRemove) != std::string::npos)
+        str.replace(str.find(toRemove), toRemove.length(), "");
+}
 
 void MainWindow::on_actionSave_As_triggered()
 {
-    cout << currentPath.toStdString() << "\n";
-    cout << "Save as\n";
+    currentPath = QFileDialog::getSaveFileName(this, tr("Create new file"));
+    if (currentPath.toStdString() != "")
+        on_actionSave_triggered();
+    else
+        statusBar()->showMessage("File not saved!", 5000);
 }
 
 void MainWindow::on_actionSave_triggered()
 {
-    cout << currentPath.toStdString() << "\n";
     if (currentPath == QString::fromStdString(""))
-    {
         on_actionSave_As_triggered();
+    else
+    {
+        std::ofstream file;
+        file.open(currentPath.toStdString());
+        file << ui->plainTextEdit->toPlainText().toStdString();
+        file.close();
     }
 }
 
 void MainWindow::on_actionNew_File_triggered()
 {
-    cout << currentPath.toStdString() << "\n";
     currentPath = QString::fromStdString("");
     ui->plainTextEdit->setPlainText(QString::fromStdString(""));
-    cout << currentPath.toStdString() << "\n";
 }
-
 
 void MainWindow::on_actionPlot_Graph_triggered()
 {
     Win sfml_win;
-    sfml_win.SetPointsConfig(ui->plainTextEdit->textCursor().selectedText().toStdString());
+    string function = ui->plainTextEdit->textCursor().selectedText().toStdString();
+    ReplaceSpaces(function, " ");
+    ReplaceSpaces(function, "y=");
+    sfml_win.SetPointsConfig(function);
     sfml_win.RunWindow();
 }
 
@@ -66,7 +72,7 @@ void MainWindow::setText()
     std::ifstream ifs;
     ifs.open(currentPath.toStdString());
     if (!ifs.is_open())
-        cout << "file \"how_to_use_notepad.txt\" deleted\n";
+        statusBar()->showMessage("File not found!", 5000);
     else
     {
         string fileString;
@@ -81,7 +87,6 @@ void MainWindow::setText()
         ifs.close();
     }
 }
-
 
 double Win::GetVisualCoordinate(double coordinate)
 {
@@ -146,9 +151,7 @@ void Win::CheckEvent()
     while (window.pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
-        {
             window.close();
-        }
         if (event.type == sf::Event::MouseWheelMoved)
         {
             double *scaleCoef = &windowCFG.scaleCoef;
@@ -271,11 +274,10 @@ void Win::RunWindow()
 {
     GetDataFromJSON();
     InitSfFields();
-    window.create(sf::VideoMode(windowCFG.side, windowCFG.side), "");
+    window.create(sf::VideoMode(windowCFG.side, windowCFG.side), "", sf::Style::Titlebar | sf::Style::Close);
     while (window.isOpen())
     {
         CheckEvent();
-        // drawing
         window.clear();
         DrawGrid();
         DrawPoints();

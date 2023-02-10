@@ -1,4 +1,7 @@
 Select finction like |y = x ^ 2| then press ctrl+b to plot graph! 
+You can open file by pressing combination ctrl+o!
+Also you could save changes you made in file by combination ctrl+s!
+If you need new file, just press ctrl+n and save changes you maid by pressing ctrl+shift+s!
 
 You can also use these operations:
 
