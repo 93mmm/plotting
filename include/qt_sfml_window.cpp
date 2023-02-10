@@ -1,9 +1,7 @@
 #include "sfml_window.h"
 #include "qt_window.h"
 #include "./ui_mainwindow.h"
-#include <math.h>
-#include <thread>
-#include <fstream>
+
 
 using std::string;
 using std::cout;;
@@ -13,7 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setText("how_to_use_notepad.txt");
+    currentPath = QString::fromStdString("how_to_use_notepad.txt");
+    setText();
 }
 
 MainWindow::~MainWindow()
@@ -21,22 +20,39 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::on_actionOpen_triggered()
 {
-
+    cout << currentPath.toStdString() << "\n";
+    currentPath = QFileDialog::getOpenFileName(this,
+        tr("Open file"));
+    setText();
+    cout << currentPath.toStdString() << "\n";
 }
 
 
 void MainWindow::on_actionSave_As_triggered()
 {
-
+    cout << currentPath.toStdString() << "\n";
+    cout << "Save as\n";
 }
 
 void MainWindow::on_actionSave_triggered()
 {
-
+    cout << currentPath.toStdString() << "\n";
+    if (currentPath == QString::fromStdString(""))
+    {
+        on_actionSave_As_triggered();
+    }
 }
+
+void MainWindow::on_actionNew_File_triggered()
+{
+    cout << currentPath.toStdString() << "\n";
+    currentPath = QString::fromStdString("");
+    ui->plainTextEdit->setPlainText(QString::fromStdString(""));
+    cout << currentPath.toStdString() << "\n";
+}
+
 
 void MainWindow::on_actionPlot_Graph_triggered()
 {
@@ -45,10 +61,10 @@ void MainWindow::on_actionPlot_Graph_triggered()
     sfml_win.RunWindow();
 }
 
-void MainWindow::setText(std::string filename)
+void MainWindow::setText()
 {
     std::ifstream ifs;
-    ifs.open(filename);
+    ifs.open(currentPath.toStdString());
     if (!ifs.is_open())
         cout << "file \"how_to_use_notepad.txt\" deleted\n";
     else
