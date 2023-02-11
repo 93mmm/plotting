@@ -41,7 +41,7 @@
    </property>
    <widget class="QMenu" name="menufile">
     <property name="title">
-     <string>file</string>
+     <string>File</string>
     </property>
     <addaction name="actionSave"/>
     <addaction name="actionSave_As"/>
@@ -50,12 +50,20 @@
    </widget>
    <widget class="QMenu" name="menufunction">
     <property name="title">
-     <string>function</string>
+     <string>Function</string>
     </property>
     <addaction name="actionPlot_Graph"/>
    </widget>
+   <widget class="QMenu" name="menulanguage">
+    <property name="title">
+     <string>Language</string>
+    </property>
+    <addaction name="actionRussianLanguageSelect"/>
+    <addaction name="actionEnglishLanguageSelect"/>
+   </widget>
    <addaction name="menufile"/>
    <addaction name="menufunction"/>
+   <addaction name="menulanguage"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionPlot_Graph">
@@ -96,6 +104,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionRussianLanguageSelect">
+   <property name="text">
+    <string>Russian</string>
+   </property>
+  </action>
+  <action name="actionEnglishLanguageSelect">
+   <property name="text">
+    <string>English</string>
    </property>
   </action>
   <widget class="QStatusBar" name="statusbar"/>

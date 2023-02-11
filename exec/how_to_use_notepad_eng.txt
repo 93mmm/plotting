@@ -3,32 +3,34 @@ You can open file by pressing combination ctrl+o!
 Also you could save changes you made in file by combination ctrl+s!
 If you need new file, just press ctrl+n and save changes you maid by pressing ctrl+shift+s!
 
+You can set russian or english language
+
 You can also use these operations:
 
 x + n       ---> adding n to x
 x - n       ---> substraction n from x
 x / n       ---> division x by n
-x * n       ---> multiplication 
+x * n       ---> multiplication x for n
 x ^ n       ---> x in power of n
 abs(x)      ---> absolute value of x
 
 log(x)      ---> ln of x
 log10(x)    ---> lg of x
-logn(x, n)  ---> logarithm of a x to base n
+logn(x, n)  ---> logarithm of x to base n
 
 sqrt(x)     ---> square root of x
-root(x, n)  ---> nth-root of x
+root(x, n)  ---> nth-root of x (x in power of (1 / n))
 
-asin(x)     ---> arc sine of x
 sin(x)      ---> sine of x
+asin(x)     ---> arc sine of x
 sinh(x)     ---> hyperbolic sine of x
 
-acos(x)     ---> arc cos of x
 cos(x)      ---> cosine of x
+acos(x)     ---> arc cos of x
 cosh(x)     ---> hyperbolic cosine of x
 
-atan(x)     ---> arc tangent of x
 tan(x)      ---> tangent of x
+atan(x)     ---> arc tangent of x
 tanh(x)     ---> hyperbolic tangent of x
 
 cot(x)      ---> cotangent of x
