@@ -43,7 +43,7 @@ class Win
         sf::Text positionOfCursor;
     // sf objects end
 
-    // vars
+    // init vars
         int movedX = 0, movedY = 0;
         bool tap = false;
         int prevPosX, prevPosY, currentX, currentY;
@@ -52,14 +52,14 @@ class Win
         double GetPlaneCoordinate(double coordinate);
 
         void InitSfFields();
-    // vars end
+        void GetDataFromJSON();
+    // init vars end
 
     // render frame
         void CheckEvent();
         void DrawGrid();
         void DrawPoints();
         void DrawText();
-        void GetDataFromJSON();
         void ResizeGrid();
     // render frame end
 
