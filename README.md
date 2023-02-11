@@ -24,10 +24,6 @@ sudo apt install clang
 ```bash
 sudo apt install nlohmann-json-dev
 ```
-5. Installed qt-6:
-```bash
-sudo apt install qt6-base-dev
-```
 
 ## Building and running
 

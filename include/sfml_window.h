@@ -10,7 +10,6 @@
 #include "exprtk.hpp"
 
 using std::string;
-using std::cout;
 using json = nlohmann::json;
 
 class Win

@@ -18,7 +18,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void SetLanguage();
+
 private slots:
+    void SetRussianLang();
+
+    void SetEnglishLang();
+
     void on_actionOpen_triggered();
 
     void on_actionSave_As_triggered();
@@ -28,10 +34,25 @@ private slots:
     void on_actionNew_File_triggered();
 
     void on_actionPlot_Graph_triggered();
+
+    void on_actionRussianLanguageSelect_triggered();
     
-    void setText();
+    void on_actionEnglishLanguageSelect_triggered();
+    
+    void SetText();
+
+    void ChangeText();
 
 private:
+    const char *fileNotSaved, *fileNotFound,
+                *howToUseNotepad, *openFile, 
+                *saveNewFile, *fileSaved;
+
+    QString menuFile, popupSave, popupSaveAs, popupNewFile, popupOpen,
+            menuFunction, popupPlotGraph,
+            menuLanguage, popupRus, popupEng;
+
+    bool uiSettedUp = false;
     Ui::MainWindow *ui;
     QString currentPath;
 };
