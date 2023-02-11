@@ -2,10 +2,12 @@
 #include "qt_window.h"
 #include "./ui_mainwindow.h"
 
+using std::string;
+using json = nlohmann::json;
+
 void ReplaceSpaces(string &str, string toRemove);
 
 // qt window
-
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     SetLanguage();
@@ -197,11 +199,9 @@ void MainWindow::ChangeText()
     ui->actionRussianLanguageSelect->setText(popupRus);
     ui->actionEnglishLanguageSelect->setText(popupEng);
 }
-
-
 // qt window end
-// sfml window
 
+// sfml window
 double Win::GetVisualCoordinate(double coordinate)
 {
     return coordinate * windowCFG.scaleCoef + windowCFG.side / 2;
@@ -229,7 +229,7 @@ void Win::InitSfFields()
         gridY[i + 51].color = sf::Color(100, 100, 100);
     }
 
-    font.loadFromFile("reg_consolas.ttf");
+    font.loadFromFile("fonts/reg_consolas.ttf");
     positionOfCursor.setFont(font);
     positionOfCursor.setCharacterSize(10);
     positionOfCursor.setFillColor(sf::Color::White);
@@ -242,12 +242,13 @@ void Win::InitSfFields()
 void Win::ResizeGrid()
 {
     int side = windowCFG.side;
+    int i = -50;
+    int increment = -25;
+    
     axes[0].position = sf::Vector2f(side / 2 + movedX, 0);
     axes[1].position = sf::Vector2f(side / 2 + movedX, side);
     axes[2].position = sf::Vector2f(0, side / 2 + movedY);
     axes[3].position = sf::Vector2f(side, side / 2 + movedY);
-    int i = -50;
-    int increment = -25;
     for (; i < 50; i += 2)
     {
         double pos = GetVisualCoordinate(increment);
@@ -364,6 +365,7 @@ void Win::SetPointsConfig(string exp)
     expression.register_symbol_table(symbol_table);
     parser_t parser;
     parser.compile(pointsCFG.expression, expression);
+
     {
         int i = 0;
         int range = pointsCFG.range;
