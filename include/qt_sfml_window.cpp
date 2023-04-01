@@ -2,7 +2,6 @@
 #include "qt_window.h"
 #include "./ui_mainwindow.h"
 
-using std::string;
 using json = nlohmann::json;
 
 void ReplaceSpaces(string &str, string toRemove);
@@ -73,7 +72,7 @@ void MainWindow::SetEnglishLang()
     fileSaved = "File saved!";
 
     menuFile = QString::fromStdString("File");
-    popupSave = QString::fromStdString("Function");
+    popupSave = QString::fromStdString("Save");
     popupSaveAs = QString::fromStdString("Save As");
     popupNewFile = QString::fromStdString("New File");
     popupOpen = QString::fromStdString("Open");

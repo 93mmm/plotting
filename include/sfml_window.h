@@ -9,6 +9,8 @@
 #include "qt_window.h"
 #include "exprtk.hpp"
 
+using std::string;
+
 class Win
 {
     private:
