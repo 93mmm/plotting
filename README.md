@@ -22,7 +22,7 @@ sudo apt install clang
 ```
 4. Installed [nlohmann-json](https://github.com/nlohmann/json):
 ```bash
-sudo apt install nlohmann-json-dev
+sudo apt-get install nlohmann-json3-dev
 ```
 
 ## Building and running
