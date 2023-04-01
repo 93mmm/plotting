@@ -20,11 +20,11 @@ sudo apt install cmake
 ```bash
 sudo apt install clang
 ```
-4. Installed [nlohmann-json](https://github.com/nlohmann/json):
+5. Installed [nlohmann-json](https://github.com/nlohmann/json):
 ```bash
 sudo apt-get install nlohmann-json3-dev
 ```
-5. Installed QT6
+6. Installed QT6
 ```bash
 sudo apt install qt6-base-dev
 ```
