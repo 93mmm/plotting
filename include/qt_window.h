@@ -11,6 +11,8 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+using std::string;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -40,11 +42,12 @@ class MainWindow : public QMainWindow
         // actions triggers end
 
     private:
-        const char  *fileNotSaved, *fileNotFound,
-                    *howToUseNotepad, *openFile, 
-                    *saveNewFile, *fileSaved;
+        string fileNotSaved, fileNotFound,
+               howToUseNotepad, openFile, 
+               saveNewFile, fileSaved;
 
-        QString menuFile, popupSave, popupSaveAs, popupNewFile, popupOpen,
+        QString menuFile, popupSave, popupSaveAs, 
+                popupNewFile, popupOpen,
                 menuFunction, popupPlotGraph,
                 menuLanguage, popupRus, popupEng;
 

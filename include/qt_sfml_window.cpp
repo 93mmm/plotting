@@ -90,17 +90,17 @@ void MainWindow::SetEnglishLang()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    currentPath = QFileDialog::getOpenFileName(this, tr(openFile));
+    currentPath = QFileDialog::getOpenFileName(this, QString::fromStdString(openFile));
     SetText();
 }
 
 void MainWindow::on_actionSave_As_triggered()
 {
-    currentPath = QFileDialog::getSaveFileName(this, tr(saveNewFile));
+    currentPath = QFileDialog::getSaveFileName(this, QString::fromStdString(saveNewFile));
     if (currentPath.toStdString() != "")
         on_actionSave_triggered();
     else
-        statusBar()->showMessage(fileNotSaved, 5000);
+        statusBar()->showMessage(QString::fromStdString(fileNotSaved), 5000);
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -113,7 +113,7 @@ void MainWindow::on_actionSave_triggered()
         file.open(currentPath.toStdString());
         file << ui->plainTextEdit->toPlainText().toStdString();
         file.close();
-        statusBar()->showMessage(fileSaved, 5000);
+        statusBar()->showMessage(QString::fromStdString(fileSaved), 5000);
     }
 }
 
@@ -138,7 +138,7 @@ void MainWindow::SetText()
     std::ifstream ifs;
     ifs.open(currentPath.toStdString());
     if (!ifs.is_open())
-        statusBar()->showMessage(fileNotFound, 5000);
+        statusBar()->showMessage(QString::fromStdString(fileNotFound), 5000);
     else
     {
         string fileString;
