@@ -4,7 +4,7 @@
 
 using json = nlohmann::json;
 
-void ReplaceSpaces(string &str, string toRemove);
+void Replace(string &str, string toRemove);
 
 // qt window
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -127,8 +127,8 @@ void MainWindow::on_actionPlot_Graph_triggered()
 {
     Win sfml_win;
     string function = ui->plainTextEdit->textCursor().selectedText().toStdString();
-    ReplaceSpaces(function, " ");
-    ReplaceSpaces(function, "y=");
+    Replace(function, " ");
+    Replace(function, "y=");
     sfml_win.SetPointsConfig(function);
     sfml_win.RunWindow();
 }
@@ -404,7 +404,7 @@ void Win::RunWindow()
 
 // sfml window end
 
-void ReplaceSpaces(string &str, string toRemove)
+void Replace(string &str, string toRemove)
 {
     while (str.find(toRemove) != std::string::npos)
         str.replace(str.find(toRemove), toRemove.length(), "");
