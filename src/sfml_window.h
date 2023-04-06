@@ -1,29 +1,21 @@
-#pragma once
-
 #include <iostream>
 #include <string>
 
 #include <nlohmann/json.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "qt_window.h"
-#include "exprtk.hpp"
+#include "../include/exprtk.hpp"
+#include "points.h"
 
 using std::string;
 
-class Win
+class SFMLWindow
 {
+    public:
+        SFMLWindow(string expr);
+        ~SFMLWindow();
     private:
     // structs
-        struct PointsConfig
-        {
-            string expression = "";
-            int range = 5;
-            double step = 0.001;
-            double arrayX[50000];
-            double arrayY[50000];
-        };
-
         struct WindowConfig
         {
             int colorAxes[3] {0, 0, 0};
@@ -31,9 +23,7 @@ class Win
             int colorFunctionGraph[3] {0, 255, 0};
             int side = 0;
             double scaleCoef = 1;
-        };
-        PointsConfig pointsCFG;
-        WindowConfig windowCFG;
+        } windowCFG;
     // structs end
 
     // sf objects
@@ -46,16 +36,21 @@ class Win
     // sf objects end
 
     // init vars
+        Points points;
+
         int movedX = 0, movedY = 0;
-        bool tap = false;
         int prevPosX, prevPosY, currentX, currentY;
 
         double GetVisualCoordinate(double coordinate);
         double GetPlaneCoordinate(double coordinate);
 
+        bool tap = false;
+        
         void InitSfFields();
         void GetDataFromJSON();
     // init vars end
+
+        void RunWindow();
 
     // render frame
         void CheckEvent();
@@ -64,8 +59,4 @@ class Win
         void DrawText();
         void ResizeGrid();
     // render frame end
-
-    public:
-        void SetPointsConfig(string exp);
-        void RunWindow();
 };

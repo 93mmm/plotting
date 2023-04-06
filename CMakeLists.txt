@@ -16,12 +16,15 @@ find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
 
 set(PROJECT_SOURCES
+        src/mainwindow.ui
         src/main.cpp
-        include/qt_window.h
-        include/sfml_window.h
-        include/qt_sfml_window.cpp
+        src/points.h
+        src/points.cpp
+        src/qt_window.h
+        src/qt_window.cpp
+        src/sfml_window.h
+        src/sfml_window.cpp
         include/exprtk.hpp
-        include/mainwindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

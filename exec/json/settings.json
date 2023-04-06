@@ -1,10 +1,8 @@
 {
-    "files": [
-        ""
-    ],
     "language": "eng",
     "points": {
-        "range": 25
+        "range": 25,
+        "step": 0.001
     },
     "window": {
         "colorAxes": [
