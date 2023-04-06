@@ -4,8 +4,11 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <fstream>
+#include <nlohmann/json.hpp>
 
-#include "exprtk.hpp"
+#include "../include/exprtk.hpp"
+#include "sfml_window.h"
+#include "./ui_mainwindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
