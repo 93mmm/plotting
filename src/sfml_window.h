@@ -27,6 +27,8 @@ class SFMLWindow
     // structs end
 
     // sf objects
+        sf::Image icon;
+        sf::Event event;
         sf::RenderWindow window;
         sf::VertexArray axes{sf::Lines, 4}, gridX{sf::Lines, 100},
                         gridY{sf::Lines, 100}, miniGridX{sf::Lines, 100},

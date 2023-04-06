@@ -47,6 +47,7 @@ void SFMLWindow::InitSfFields()
 
     prevPosX = sf::Mouse::getPosition(window).x;
     prevPosY = sf::Mouse::getPosition(window).y;
+    icon.loadFromFile("icon/logo.png");
 }
 
 void SFMLWindow::ResizeGrid()
@@ -72,7 +73,6 @@ void SFMLWindow::ResizeGrid()
 
 void SFMLWindow::CheckEvent()
 {
-    sf::Event event;
     while (window.pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
@@ -165,6 +165,7 @@ void SFMLWindow::RunWindow()
     GetDataFromJSON();
     InitSfFields();
     window.create(sf::VideoMode(windowCFG.side, windowCFG.side), "", sf::Style::Titlebar | sf::Style::Close);
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     while (window.isOpen())
     {
         CheckEvent();
