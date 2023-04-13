@@ -35,7 +35,7 @@ void MainWindow::SetRussianLang()
 {
     fileNotSaved = "Файл не сохранён!";
     fileNotFound = "Файл не найден!";
-    howToUseNotepad = "text_files/how_to_use_notepad_rus.txt";
+    howToUseNotepad = "text_files/rus.txt";
     openFile = "Открыть файл";
     saveNewFile = "Сохранить новый файл";
     fileSaved = "Файл сохранён!";
@@ -51,7 +51,7 @@ void MainWindow::SetRussianLang()
     popupRus = QString::fromStdString("Русский");
     popupEng = QString::fromStdString("Английский");
 
-    const char *anotherPath = "text_files/how_to_use_notepad_eng.txt";
+    const char *anotherPath = "text_files/eng.txt";
     if (currentPath.toStdString() == anotherPath)
         currentPath = QString::fromStdString(howToUseNotepad);
     SetText();
@@ -61,7 +61,7 @@ void MainWindow::SetEnglishLang()
 {
     fileNotSaved = "File not saved!";
     fileNotFound = "File not found!";
-    howToUseNotepad = "text_files/how_to_use_notepad_eng.txt";
+    howToUseNotepad = "text_files/eng.txt";
     openFile = "Open file";
     saveNewFile = "Save new file";
     fileSaved = "File saved!";
@@ -77,7 +77,7 @@ void MainWindow::SetEnglishLang()
     popupRus = QString::fromStdString("Russian");
     popupEng = QString::fromStdString("English");
 
-    const char *anotherPath = "text_files/how_to_use_notepad_rus.txt";
+    const char *anotherPath = "text_files/rus.txt";
     if (currentPath.toStdString() == anotherPath)
         currentPath = QString::fromStdString(howToUseNotepad);
     SetText();

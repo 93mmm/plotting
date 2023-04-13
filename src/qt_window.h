@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include <QFileDialog>
@@ -58,4 +57,3 @@ class MainWindow : public QMainWindow
         Ui::MainWindow *ui;
         QString currentPath;
 };
-#endif // MAINWINDOW_H
