@@ -54,7 +54,7 @@ class SFMLWindow
         void GetDataFromJSON();
     // init vars end
 
-        void RunWindow();
+        void Render();
 
     // render frame
         void CheckEvent();

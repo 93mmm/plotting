@@ -1,6 +1,5 @@
 #include "points.h"
 
-
 Points::Points()
 {
     readDataFromJson();

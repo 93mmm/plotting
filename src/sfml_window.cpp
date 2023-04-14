@@ -4,7 +4,11 @@
 SFMLWindow::SFMLWindow(string expr)
 {
     points.init(expr);
-    RunWindow();
+    GetDataFromJSON();
+    InitSfFields();
+    window.create(sf::VideoMode(windowCFG.side, windowCFG.side), "", sf::Style::Titlebar | sf::Style::Close);
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    Render();
 }
 
 SFMLWindow::~SFMLWindow()
@@ -160,12 +164,8 @@ void SFMLWindow::DrawText()
     window.draw(positionOfCursor);
 }
 
-void SFMLWindow::RunWindow()
+void SFMLWindow::Render()
 {
-    GetDataFromJSON();
-    InitSfFields();
-    window.create(sf::VideoMode(windowCFG.side, windowCFG.side), "", sf::Style::Titlebar | sf::Style::Close);
-    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     while (window.isOpen())
     {
         CheckEvent();
