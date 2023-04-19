@@ -56,6 +56,10 @@ void SFMLWindow::InitSfFields()
     positionOfCursor.setFillColor(sf::Color::White);
     positionOfCursor.setPosition(sf::Vector2f(windowCFG.side - 200, 1));
 
+    axis.setFont(font);
+    axis.setCharacterSize(20);
+    axis.setFillColor(sf::Color::White);
+
     prevPosX = sf::Mouse::getPosition(window).x;
     prevPosY = sf::Mouse::getPosition(window).y;
     icon.loadFromFile("icon/logo.png");
@@ -131,7 +135,6 @@ void SFMLWindow::DrawGrid()
     window.draw(gridX);
     window.draw(gridY);
     window.draw(axes);
-    window.draw(positionOfCursor);
 }
 
 void SFMLWindow::DrawPoints()
@@ -174,7 +177,7 @@ void SFMLWindow::DrawText()
     string pos = "x: " + std::to_string(GetPlaneCoordinate(currentX - movedX)).substr(0, 5) + 
     " y: " + std::to_string(-GetPlaneCoordinate(currentY - movedY)).substr(0, 5);
     positionOfCursor.setString(pos);
-    window.draw(positionOfCursor);
+    window.draw(positionOfCursor);   
 }
 
 void SFMLWindow::Render()
@@ -186,6 +189,7 @@ void SFMLWindow::Render()
         DrawGrid();
         DrawPoints();
         DrawText();
+        DrawNumbers();
         window.display();
         QCoreApplication::processEvents();
     }
@@ -193,5 +197,17 @@ void SFMLWindow::Render()
 
 void SFMLWindow::DrawNumbers()
 {
+    string number;
+    double divided_side = windowCFG.side / 2;
 
+    axis.setCharacterSize(20 * windowCFG.scaleCoef / 50);
+    for (int i = -25; i <= 25; i++)
+    {
+        number = std::to_string(i);
+        axis.setString(number);
+        axis.setPosition(sf::Vector2f(GetVisualCoordinate(i) + movedX, movedY + divided_side));
+        window.draw(axis);
+        axis.setPosition(sf::Vector2f(movedX + divided_side, GetVisualCoordinate(-i) + movedY));
+        window.draw(axis);
+    }
 }

@@ -37,7 +37,7 @@ class SFMLWindow
                         gridY{sf::Lines, 100}, miniGridX{sf::Lines, 1},
                         miniGridY{sf::Lines, 1};
         sf::Font font;
-        sf::Text positionOfCursor;
+        sf::Text positionOfCursor, axis;
     // sf objects end
 
     // init vars
