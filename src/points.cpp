@@ -10,7 +10,6 @@ Points::~Points()
 {
     free(array_x);
     free(array_y);
-    std::cout << "arrays destroyed\n";
 }
 
 void Points::init(string expr)
@@ -54,7 +53,7 @@ void Points::readDataFromJson()
     assert(jsonFile.is_open());
     json parsedFile = json::parse(jsonFile);
     jsonFile.close();
-    range = stoi(parsedFile["points"]["range"].dump());
+    range = parsedFile["points"]["range"].get<int>();
     step = parsedFile["points"]["step"].get<double>();;
 }
 

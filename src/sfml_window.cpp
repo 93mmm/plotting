@@ -28,6 +28,13 @@ double SFMLWindow::GetPlaneCoordinate(double coordinate)
 
 void SFMLWindow::InitSfFields()
 {
+    std::ifstream jsonFile("json/settings.json");
+    json parsedFile = json::parse(jsonFile);
+    jsonFile.close();
+
+    gridX.resize(100);
+    gridY.resize(100);
+
     int side = windowCFG.side;
     axes[0].position = sf::Vector2f(side / 2, 0);
     axes[1].position = sf::Vector2f(side / 2, side);
@@ -45,7 +52,7 @@ void SFMLWindow::InitSfFields()
 
     font.loadFromFile("fonts/reg_consolas.ttf");
     positionOfCursor.setFont(font);
-    positionOfCursor.setCharacterSize(10);
+    positionOfCursor.setCharacterSize(20);
     positionOfCursor.setFillColor(sf::Color::White);
     positionOfCursor.setPosition(sf::Vector2f(windowCFG.side - 200, 1));
 
@@ -96,9 +103,14 @@ void SFMLWindow::CheckEvent()
                 *scaleCoef *= 1 + 0.05 * event.mouseWheel.delta;
         }
     }
+    
     currentX = sf::Mouse::getPosition(window).x;
     currentY = sf::Mouse::getPosition(window).y;
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+
+    bool isOnWindowX = (currentX >= 0 and currentX <= windowCFG.side);
+    bool isOnWindowY = (currentY >= 0 and currentY <= windowCFG.side);
+
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) and isOnWindowX and isOnWindowY)
     {
         movedX += currentX - prevPosX;
         movedY += currentY - prevPosY;
@@ -141,25 +153,26 @@ void SFMLWindow::GetDataFromJSON()
     json parsedFile = json::parse(jsonFile);
     jsonFile.close();
 
-    windowCFG.side = stoi(parsedFile["window"]["side"].dump());
+    windowCFG.side = parsedFile["window"]["side"].get<int>();
     windowCFG.scaleCoef = windowCFG.side / 20;
 
-    windowCFG.colorAxes[0] = stoi(parsedFile["window"]["colorAxes"][0].dump());
-    windowCFG.colorAxes[1] = stoi(parsedFile["window"]["colorAxes"][1].dump());
-    windowCFG.colorAxes[2] = stoi(parsedFile["window"]["colorAxes"][2].dump());
+    windowCFG.colorAxes[0] = parsedFile["window"]["colorAxes"][0].get<int>();
+    windowCFG.colorAxes[1] = parsedFile["window"]["colorAxes"][1].get<int>();
+    windowCFG.colorAxes[2] = parsedFile["window"]["colorAxes"][2].get<int>();
 
-    windowCFG.colorBackground[0] = stoi(parsedFile["window"]["colorBackground"][0].dump());
-    windowCFG.colorBackground[1] = stoi(parsedFile["window"]["colorBackground"][1].dump());
-    windowCFG.colorBackground[2] = stoi(parsedFile["window"]["colorBackground"][2].dump());
+    windowCFG.colorBackground[0] = parsedFile["window"]["colorBackground"][0].get<int>();
+    windowCFG.colorBackground[1] = parsedFile["window"]["colorBackground"][1].get<int>();
+    windowCFG.colorBackground[2] = parsedFile["window"]["colorBackground"][2].get<int>();
 
-    windowCFG.colorFunctionGraph[0] = stoi(parsedFile["window"]["colorFunctionGraph"][0].dump());
-    windowCFG.colorFunctionGraph[1] = stoi(parsedFile["window"]["colorFunctionGraph"][1].dump());
-    windowCFG.colorFunctionGraph[2] = stoi(parsedFile["window"]["colorFunctionGraph"][2].dump());
+    windowCFG.colorFunctionGraph[0] = parsedFile["window"]["colorFunctionGraph"][0].get<int>();
+    windowCFG.colorFunctionGraph[1] = parsedFile["window"]["colorFunctionGraph"][1].get<int>();
+    windowCFG.colorFunctionGraph[2] = parsedFile["window"]["colorFunctionGraph"][2].get<int>();
 }
 
 void SFMLWindow::DrawText()
 {
-    string pos = "x: " + std::to_string(GetPlaneCoordinate(currentX - movedX)) + " y: " + std::to_string(-GetPlaneCoordinate(currentY - movedY));
+    string pos = "x: " + std::to_string(GetPlaneCoordinate(currentX - movedX)).substr(0, 5) + 
+    " y: " + std::to_string(-GetPlaneCoordinate(currentY - movedY)).substr(0, 5);
     positionOfCursor.setString(pos);
     window.draw(positionOfCursor);
 }
@@ -176,4 +189,9 @@ void SFMLWindow::Render()
         window.display();
         QCoreApplication::processEvents();
     }
+}
+
+void SFMLWindow::DrawNumbers()
+{
+
 }

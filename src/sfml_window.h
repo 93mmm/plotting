@@ -8,6 +8,7 @@
 
 #include "../include/exprtk.hpp"
 #include "points.h"
+#define GRID 100
 
 using std::string;
 
@@ -33,8 +34,8 @@ class SFMLWindow
         sf::Event event;
         sf::RenderWindow window;
         sf::VertexArray axes{sf::Lines, 4}, gridX{sf::Lines, 100},
-                        gridY{sf::Lines, 100}, miniGridX{sf::Lines, 100},
-                        miniGridY{sf::Lines, 100};
+                        gridY{sf::Lines, 100}, miniGridX{sf::Lines, 1},
+                        miniGridY{sf::Lines, 1};
         sf::Font font;
         sf::Text positionOfCursor;
     // sf objects end
@@ -62,5 +63,6 @@ class SFMLWindow
         void DrawPoints();
         void DrawText();
         void ResizeGrid();
+        void DrawNumbers();
     // render frame end
 };

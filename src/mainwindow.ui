@@ -21,7 +21,7 @@
        <widget class="QPlainTextEdit" name="plainTextEdit">
         <property name="font">
          <font>
-          <family>Monospace</family>
+          <family>Menlo</family>
          </font>
         </property>
        </widget>
